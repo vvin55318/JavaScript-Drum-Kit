@@ -60,7 +60,8 @@
 
 </head>
 <body>
-    <h1 style="text-align:center;font-size:80px">pad controller</h1>
+    <h1 style="text-align:center;font-size:80px;margin-bottom:0px;">pad controller</h1>
+    <h3 style="text-align:center;">可使用數字鍵盤</h3>
     <div class="pad_surface">
         <div class="row">
             <div class="pad_key" data-keycode="103"></div>
@@ -100,7 +101,7 @@ window.addEventListener('keydown',function(){
     audio.play();
     setTimeout(function(){
         key.classList.remove('playing');
-    },400)
+    },200)
 })
 
 for(i=0;i<9;i++){
