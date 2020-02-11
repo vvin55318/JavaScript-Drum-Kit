@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pad controller</title>
+<style>
+    body{
+        width:100%;
+        height:100%;
+        background:rgb(210, 255, 237);
+    }
+
+    .pad_surface{
+        width:512px;
+        height:512px;
+        background:#1C1C1C;
+        border-radius:10px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        display:flex;
+        flex-direction:column;
+        justify-content:space-around;
+        padding:5px;
+    }
+    
+    .row{
+        width:100%;
+        height:30%;
+        display:flex;
+        justify-content:space-around;
+    }
+
+    .pad_key{
+        width:30%;
+        height:100%;
+        position:relative;
+        overflow:hidden;
+        border-radius:10px;
+    }
+
+    .pad_key::before{
+        content:"";
+        background:#fff;
+        position:absolute;
+        width:100%;
+        height:100%;
+        filter:blur(16px);
+        /* border:1px solid #333; */
+        border-radius:10px;
+    }
+
+    .playing{
+        background:#FF00C0;
+    }
+</style>
+
+
+</head>
+<body>
+    <h1 style="text-align:center;font-size:80px">pad controller</h1>
+    <div class="pad_surface">
+        <div class="row">
+            <div class="pad_key" data-keycode="103"></div>
+            <div class="pad_key" data-keycode="104"></div>
+            <div class="pad_key" data-keycode="105"></div>
+        </div>
+        <div class="row">
+            <div class="pad_key" data-keycode="100"></div>
+            <div class="pad_key" data-keycode="101"></div>
+            <div class="pad_key" data-keycode="102"></div>
+        </div>
+        <div class="row">
+            <div class="pad_key" data-keycode="97"></div>
+            <div class="pad_key" data-keycode="98"></div>
+            <div class="pad_key" data-keycode="99"></div>
+        </div>
+    </div>
+
+    <audio data-keycode="97" src="sounds/boom.wav"></audio>
+    <audio data-keycode="98" src="sounds/clap.wav"></audio>
+    <audio data-keycode="99" src="sounds/hihat.wav"></audio>
+    <audio data-keycode="100" src="sounds/kick.wav"></audio>
+    <audio data-keycode="101" src="sounds/openhat.wav"></audio>
+    <audio data-keycode="102" src="sounds/ride.wav"></audio>
+    <audio data-keycode="103" src="sounds/snare.wav"></audio>
+    <audio data-keycode="104" src="sounds/tink.wav"></audio>
+    <audio data-keycode="105" src="sounds/tom.wav"></audio>
+
+<script>
+// 鍵盤功能
+window.addEventListener('keydown',function(){
+    const audio=document.querySelector(`audio[data-keycode="${event.keyCode}"]`);
+    const key=document.querySelector(`div[data-keycode="${event.keyCode}"]`)
+    if(!audio) alert('請使用數字鍵盤');
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+    setTimeout(function(){
+        key.classList.remove('playing');
+    },400)
+})
+
+for(i=0;i<9;i++){
+    // 滑入效果
+    document.getElementsByClassName('pad_key')[i].addEventListener('mouseover',function(){
+        this.setAttribute('style','opacity:80%');
+        keycode=this.dataset.keycode;
+        get_click_event=this;
+        // 點擊效果
+        this.addEventListener('mousedown',function(){
+            const click_audio=document.querySelector(`audio[data-keycode="${keycode}"]`);
+            this.setAttribute('style','opacity:100%');
+            this.setAttribute('style','background:#FF00C0;');
+            click_audio.currentTime = 0;
+            click_audio.play();
+            remove_click_event=this;
+            // 點擊效果延遲
+            setTimeout(function(){
+                remove_click_event.setAttribute('style','');
+            },200)
+        })
+    })
+    // 滑出效果
+    document.getElementsByClassName('pad_key')[i].addEventListener('mouseout',function(){
+        this.setAttribute('style','opacity:100%');
+    })
+}
+</script>
+
+
+</body>
+</html>
